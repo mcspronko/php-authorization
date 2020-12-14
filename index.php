@@ -20,7 +20,9 @@ $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 
 $session = new Session();
-$database = new Database('mysql:dbname=auth_prep;host=127.0.0.1', 'root');
+$config = include_once 'config/database.php';
+
+$database = new Database($config['dsn'], $config['username'], $config['password']);
 $authorization = new Authorization($database, $session);
 
 $sessionMiddleware = function (Request $request, RequestHandlerInterface $handler) use ($session) {
