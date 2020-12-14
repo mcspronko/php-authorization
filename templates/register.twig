@@ -1,0 +1,31 @@
+{% extends 'parts/starter.twig' %}
+
+{% block body %}
+  <h1>Register</h1>
+
+  {% if message is not null %}
+  <div class="alert alert-danger" role="alert">
+    {{ message }}
+  </div>
+  {% endif %}
+  <form method="post" action="/register-post">
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" name="username" class="form-control" id="username" value="{{ form ? form.username }}" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email address</label>
+      <input type="email" name="email" class="form-control" id="email" aria-describedby="emailHelp" value="{{ form ? form.email }}" />
+      <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" class="form-control" id="password">
+    </div>
+    <div class="form-group">
+      <label for="confirm_password">Confirm Password</label>
+      <input type="password" name="confirm_password" class="form-control" id="confirm_password">
+    </div>
+    <button type="submit" class="btn btn-primary">Register</button>
+  </form>
+{% endblock %}
