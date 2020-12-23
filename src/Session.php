@@ -11,11 +11,19 @@ class Session
         session_start();
     }
 
+    /**
+     * @param string $key
+     * @param $value
+     */
     public function setData(string $key, $value): void
     {
         $_SESSION[$key] = $value;
     }
 
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
     public function getData(string $key)
     {
         return !empty($_SESSION[$key]) ? $_SESSION[$key] : null;
@@ -26,6 +34,10 @@ class Session
         session_write_close();
     }
 
+    /**
+     * @param string $key
+     * @return mixed|null
+     */
     public function flush(string $key)
     {
         $value = $this->getData($key);
@@ -34,6 +46,9 @@ class Session
         return $value;
     }
 
+    /**
+     * @param string $key
+     */
     private function unset(string $key): void
     {
         unset($_SESSION[$key]);

@@ -2,6 +2,11 @@
 
 {% block body %}
   <h1>Home</h1>
+  {% if message is not null %}
+    <div class="alert alert-{{ message.type }}" role="alert">
+      {{ message.text }}
+    </div>
+  {% endif %}
   {% if user is not null %}
     <p>Hello, {{ user.username|escape }}</p>
   {% else %}

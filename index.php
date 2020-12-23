@@ -36,6 +36,7 @@ $app->add($sessionMiddleware);
 $app->get('/', function (Request $request, Response $response) use ($twig, $session) {
     $body = $twig->render('index.twig', [
         'user' => $session->getData('user'),
+        'message' => $session->flush('message'),
     ]);
     $response->getBody()->write($body);
     return $response;
@@ -56,6 +57,10 @@ $app->post('/login-post', function (Request $request, Response $response) use ($
 
     try {
         $authorization->login($params['email'], $params['password']);
+        $session->setData('message', [
+            'type' => 'success',
+            'text' => sprintf('Welcome back, %s!', $session->getData('user')['username'])
+        ]);
     } catch (AuthorizationException $exception) {
         $session->setData('form', $params);
         $session->setData('message', $exception->getMessage());
@@ -67,8 +72,12 @@ $app->post('/login-post', function (Request $request, Response $response) use ($
         ->withStatus(302);
 });
 
-$app->get('/logout', function (Request $request, Response $response) use ($session) {
-    $session->setData('user', null);
+$app->get('/logout', function (Request $request, Response $response) use ($authorization, $session) {
+    $authorization->logout();
+    $session->setData('message', [
+        'type' => 'success',
+        'text' => 'You have successfully logged out.'
+    ]);
     return $response->withHeader('Location', '/')
         ->withStatus(302);
 });
@@ -97,4 +106,5 @@ $app->post('/register-post', function (Request $request, Response $response) use
     return $response->withHeader('Location', '/')
         ->withStatus(302);
 });
+
 $app->run();

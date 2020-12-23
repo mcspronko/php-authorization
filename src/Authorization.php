@@ -111,7 +111,16 @@ class Authorization
             ]);
             return true;
         } else {
-            throw new AuthorizationException('Invalid password provided');
+            throw new AuthorizationException('Incorrect email or password');
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function logout(): bool
+    {
+        $this->session->setData('user', null);
+        return true;
     }
 }
